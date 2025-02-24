@@ -376,7 +376,13 @@ export default function Home() {
           content="Helpchess is on a mission to support 1000 Indian chess players to reach their goals!"
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/images/icons/favicon/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon/favicon-16x16.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon/favicon-96x96.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/favicon/apple-touch-icon.png" />
+        <link rel="android-chrome" sizes="192x192" href="/images/icons/favicon/android-chrome-192x192.png" />
+        <link rel="android-chrome" sizes="512x512" href="/images/icons/favicon/android-chrome-512x512.png" />
       </Head>
       <HomeContainer>
         <VideoModal
@@ -475,7 +481,7 @@ export default function Home() {
           {/* ["Name", "Amount", "Description", "Month", "Link"] */}
           {articleLoadLimit && (
             <span className="articles">
-              {workItems.slice(1, articleLoadLimit).map((news) => (
+              {workItems?.slice(1, articleLoadLimit).map((news) => (
                 <NewsCard
                   title={news[0]}
                   amount={news[1]}
