@@ -31,12 +31,30 @@ const HomeContainer = styled.div`
 const StatsSection = styled.section`
   display: flex;
   align-items: center;
-  justify-content: center;
   height: 13.5rem;
   width: 100%;
   border-radius: 0.9375rem;
   background: linear-gradient(105deg, #fff9c1 58.95%, #fff 100%);
   gap: 0.44rem;
+  overflow-x: auto;
+  padding: 0 1rem;
+  justify-content: safe center;
+
+  /* For browsers that don't support safe values */
+  @supports not (justify-content: safe center) {
+    justify-content: center;
+  }
+
+  & > :first-child {
+    margin-left: 0;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 const SectionVideo = styled.section`0
@@ -113,7 +131,7 @@ const SectionDescription = styled.p`
   text-align: center;
   color: ${({ theme }) => theme.colors.light};
   margin: 0 32px;
-  width: 20rem;
+  width: min(20rem, 100%);
 `;
 
 const SectionTestimonials = styled.section`
@@ -153,7 +171,7 @@ const SectionNews = styled.section`
   align-items: center;
   gap: 2rem;
   margin-top: 2rem;
-
+  overflow-x: hidden;
   .articles {
     width: 100%;
     height: fit-content;
@@ -285,11 +303,11 @@ const SectionWidgets = styled.section`
     font-weight: 700;
     line-height: 110%;
     text-align: center;
-    width: 30rem;
+    width: min(30rem, 100%);
   }
 
   .description {
-    width: 30rem;
+    width: min(30rem, 100%);
   }
 `;
 
@@ -377,12 +395,39 @@ export default function Home() {
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/images/icons/favicon/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/images/icons/favicon/favicon-16x16.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/images/icons/favicon/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="96x96" href="/images/icons/favicon/favicon-96x96.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/images/icons/favicon/apple-touch-icon.png" />
-        <link rel="android-chrome" sizes="192x192" href="/images/icons/favicon/android-chrome-192x192.png" />
-        <link rel="android-chrome" sizes="512x512" href="/images/icons/favicon/android-chrome-512x512.png" />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/images/icons/favicon/favicon-16x16.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/images/icons/favicon/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="96x96"
+          href="/images/icons/favicon/favicon-96x96.png"
+        />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/images/icons/favicon/apple-touch-icon.png"
+        />
+        <link
+          rel="android-chrome"
+          sizes="192x192"
+          href="/images/icons/favicon/android-chrome-192x192.png"
+        />
+        <link
+          rel="android-chrome"
+          sizes="512x512"
+          href="/images/icons/favicon/android-chrome-512x512.png"
+        />
       </Head>
       <HomeContainer>
         <VideoModal
@@ -406,6 +451,11 @@ export default function Home() {
             title="players"
             text="55+"
             img="/images/icons/pawn.svg"
+          ></StatsCard>
+          <StatsCard
+            title="big believers"
+            text="50"
+            img="/images/icons/star-big.svg"
           ></StatsCard>
         </StatsSection>
         <SectionDonations ref={donationsScrollRef}>

@@ -5,12 +5,13 @@ const StyledStatsCard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 7.3125rem;
-  height: 8.4375rem;
+  min-width: 7.5rem;
+  height: 8.5rem;
   border-radius: 0.625rem;
   background: #fff;
   box-shadow: 0px 1px 2px 0px rgba(96, 0, 252, 0.3);
   gap: 1.2rem;
+  padding: 1rem;
 `;
 
 const Title = styled.p`
@@ -24,6 +25,7 @@ const Title = styled.p`
 
 const Icon = styled.img`
   width: 2rem;
+  aspect-ratio: 1/1;
   flex-shrink: 0;
 `;
 

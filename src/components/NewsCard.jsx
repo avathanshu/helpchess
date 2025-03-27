@@ -9,7 +9,7 @@ const Card = styled.div`
   gap: 1rem;
   padding: 1rem;
   margin: 1rem;
-  width: 22rem;
+  width: min(22rem, 100%);
   aspect-ratio: 1;
   box-shadow: 0px 4px 4px 0px #00000021;
   border: 1px solid #99999999;
@@ -84,11 +84,9 @@ export default function NewsCard({
 }) {
   if (loadMore) {
     return (
-      <button onClick={onClick}>
-        <LoadMoreCard>
-          <p>Load all</p>
-        </LoadMoreCard>
-      </button>
+      <LoadMoreCard onClick={onClick}>
+        <p>Load all</p>
+      </LoadMoreCard>
     );
   }
   return (
