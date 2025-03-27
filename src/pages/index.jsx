@@ -394,7 +394,7 @@ export default function Home() {
         <StatsSection>
           <StatsCard
             title="raised"
-            text="₹1cr+"
+            text="₹2cr+"
             img="/images/icons/gift.svg"
           ></StatsCard>
           <StatsCard
@@ -404,7 +404,7 @@ export default function Home() {
           ></StatsCard>
           <StatsCard
             title="players"
-            text="50+"
+            text="55+"
             img="/images/icons/pawn.svg"
           ></StatsCard>
         </StatsSection>
