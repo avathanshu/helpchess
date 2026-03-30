@@ -1,4 +1,12 @@
 import styled from "styled-components";
+import CheckPattern from "@/components/CheckPattern";
+
+const formatINR = (amount) =>
+  new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(amount);
 
 const Wrapper = styled.div`
   min-width: 18rem;
@@ -7,61 +15,62 @@ const Wrapper = styled.div`
   padding: 1.5rem 1rem;
   border-radius: 10px;
   display: flex;
-  justify-content: space-between;
-`;
+  position: relative;
+  overflow: hidden;
 
-const Icon = styled.img`
-  width: 6rem;
-  aspect-ratio: 1;
+  .pattern-bg {
+    position: absolute;
+    bottom: -15%;
+    right: -10%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+  }
 `;
 
 const TextContainer = styled.span`
-  max-width: 50%;
-  text-align: right;
+  width: 100%;
+  text-align: left;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 0.5rem;
-
-  .thankYou {
-    font-family: Roboto;
-    font-size: 0.8rem;
-    font-weight: 400;
-    line-height: 14.06px;
-    text-align: right;
-  }
+  gap: 0.25rem;
+  position: relative;
+  z-index: 1;
 
   .name {
     color: #6562fe;
-    font-family: Roboto;
-    font-size: 1.2rem;
+    font-family: var(--font-roboto), sans-serif;
+    font-size: 1.1rem;
     font-weight: 700;
-    line-height: 30px;
-    text-align: right;
-    white-space: nowrap;
+    line-height: 1.4;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
+    word-break: break-word;
   }
 
   .amount {
     color: #6562fe;
-    font-family: Roboto;
-    font-size: 1.2rem;
+    font-family: var(--font-roboto), sans-serif;
+    font-size: 1rem;
     font-weight: 400;
-    line-height: 30px;
-    text-align: right;
+    line-height: 1.5;
+    text-align: left;
+    opacity: 0.85;
   }
 `;
 
 export default function DonationCard({ amount, name }) {
   return (
     <Wrapper>
-      <Icon src="/images/icons/confetti.svg"></Icon>
+      <CheckPattern className="pattern-bg" />
       <TextContainer>
-        <p className="thankYou">Thank you believers!</p>
         <span>
           <p className="name">{name}</p>
-          <p className="amount">{`₹${amount}`}</p>
+          <p className="amount">{formatINR(amount)}</p>
         </span>
       </TextContainer>
     </Wrapper>

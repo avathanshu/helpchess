@@ -10,13 +10,14 @@ const roboto = Roboto({
   style: ["normal", "italic"],
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-roboto",
 });
 
 export default function App({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyles />
-      <main className={roboto.className}>
+      <main className={`${roboto.className} ${roboto.variable}`}>
         <Layout>
           <Component {...pageProps} />
         </Layout>

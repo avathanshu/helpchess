@@ -220,7 +220,18 @@ const SectionScholarship = styled.section`
   }
 `;
 
-const SectionDonations = styled.section`
+const SectionDonationsWrapper = styled.section`
+  max-width: 100vw;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+`;
+
+const SectionDonations = styled.div`
   width: 100%;
   height: fit-content;
   overflow-x: scroll;
@@ -458,15 +469,20 @@ export default function Home() {
             img="/images/icons/star-big.svg"
           ></StatsCard>
         </StatsSection>
-        <SectionDonations ref={donationsScrollRef}>
-          {donors.map((donor) => (
-            <DonationCard
-              name={donor.name}
-              amount={donor.amount}
-              key={donor.id}
-            />
-          ))}
-        </SectionDonations>
+        <SectionDonationsWrapper>
+          <img src="/images/icons/confetti.svg" style={{ width: "3.5rem", aspectRatio: "1" }} alt="confetti" />
+          <SectionTitle>Latest donors.</SectionTitle>
+          <SectionDescription>Thank you for your contribution.</SectionDescription>
+          <SectionDonations ref={donationsScrollRef}>
+            {donors.map((donor) => (
+              <DonationCard
+                name={donor.name}
+                amount={donor.amount}
+                key={donor.id}
+              />
+            ))}
+          </SectionDonations>
+        </SectionDonationsWrapper>
         <ScrollButtonBox>
           <ScrollButton
             onClick={() => scrollLeft({ type: "donations" })}
