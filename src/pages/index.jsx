@@ -450,7 +450,7 @@ export default function Home() {
         <StatsSection>
           <StatsCard
             title="raised"
-            text="₹2cr+"
+            text="₹3cr+"
             img="/images/icons/gift.svg"
           ></StatsCard>
           <StatsCard
@@ -460,7 +460,7 @@ export default function Home() {
           ></StatsCard>
           <StatsCard
             title="players"
-            text="55+"
+            text="70+"
             img="/images/icons/pawn.svg"
           ></StatsCard>
           <StatsCard
@@ -470,9 +470,15 @@ export default function Home() {
           ></StatsCard>
         </StatsSection>
         <SectionDonationsWrapper>
-          <img src="/images/icons/confetti.svg" style={{ width: "3.5rem", aspectRatio: "1" }} alt="confetti" />
+          <img
+            src="/images/icons/confetti.svg"
+            style={{ width: "3.5rem", aspectRatio: "1" }}
+            alt="confetti"
+          />
           <SectionTitle>Latest donors.</SectionTitle>
-          <SectionDescription>Thank you for your contribution.</SectionDescription>
+          <SectionDescription>
+            Thank you for your contribution.
+          </SectionDescription>
           <SectionDonations ref={donationsScrollRef}>
             {donors.map((donor) => (
               <DonationCard
