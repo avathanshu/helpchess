@@ -18,8 +18,6 @@ import Button from "@/components/Button";
 import { BREAK_POINTS } from "@/styles/responsive";
 import { testimonials, donationCardContent } from "@/utils/constants";
 
-const initialArticleLoadLimit = 8;
-
 const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -325,10 +323,10 @@ const SectionWidgets = styled.section`
 export default function Home() {
   const [donors, setDonors] = useState([]);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [articleLoadLimit, setArticleLoadLimit] = useState(
-    initialArticleLoadLimit,
-  );
-  const [workItems, setWorkItems] = useState([]);
+  const [reports, setReports] = useState([]);
+  const [reportsPage, setReportsPage] = useState(1);
+  const [reportsTotalPages, setReportsTotalPages] = useState(1);
+  const [reportsLoading, setReportsLoading] = useState(true);
 
   const donationsScrollRef = useRef(null);
   const testimonialsScrollRef = useRef(null);
@@ -366,16 +364,28 @@ export default function Home() {
   };
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(
-        "https://sheets.googleapis.com/v4/spreadsheets/1yo2GrCH9uD9DKmehh534IhS9NlR5FPlESjNZHvCadO0/values/Sheet1!A1:E700?key=AIzaSyDRpd7XCVIQsju4cmbb1GXXEoxV7mG1Nzw",
-      );
-      const data = await response.json();
-      setWorkItems(data.values);
+    async function fetchReports() {
+      setReportsLoading(true);
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/v1/hc/reports?page=${reportsPage}&pageSize=8`,
+        );
+        const result = await response.json();
+        if (result.ok) {
+          setReports((prev) => reportsPage === 1 ? result.data.reports : [...prev, ...result.data.reports]);
+          setReportsTotalPages(result.data.totalPages || 1);
+        } else {
+          console.error("Error fetching reports:", result.err);
+        }
+      } catch (error) {
+        console.error("Error fetching reports:", error);
+      } finally {
+        setReportsLoading(false);
+      }
     }
 
-    fetchData();
-  }, []);
+    fetchReports();
+  }, [reportsPage]);
 
   useEffect(() => {
     const fetchDonors = async () => {
@@ -550,20 +560,25 @@ export default function Home() {
           <SectionDescription>
             See how your contributions are helping many chess players.
           </SectionDescription>
-          {/* ["Name", "Amount", "Description", "Month", "Link"] */}
-          {articleLoadLimit && (
+          {reportsLoading ? (
+            <p>Loading...</p>
+          ) : reports.length === 0 ? (
+            <p>No reports yet.</p>
+          ) : (
             <span className="articles">
-              {workItems?.slice(1, articleLoadLimit).map((news) => (
+              {reports.map((report) => (
                 <NewsCard
-                  title={news[0]}
-                  amount={news[1]}
-                  description={news[2]}
-                  month={news[3]}
-                  link={news[4]}
-                ></NewsCard>
+                  key={report._id}
+                  title={report.title}
+                  amount={report.amount}
+                  description={report.subtitle}
+                  thumbnail={report.thumbnail}
+                  month={new Date(report.date).toLocaleDateString("en-IN", { month: "long", year: "numeric" })}
+                  link={report.link}
+                />
               ))}
-              {articleLoadLimit === initialArticleLoadLimit && (
-                <NewsCard loadMore onClick={() => setArticleLoadLimit(1000)} />
+              {reportsPage < reportsTotalPages && (
+                <NewsCard loadMore onClick={() => setReportsPage((p) => p + 1)} />
               )}
             </span>
           )}
