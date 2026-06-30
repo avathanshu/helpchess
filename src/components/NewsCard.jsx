@@ -5,10 +5,8 @@ import Image from "next/image";
 
 const ThumbnailWrapper = styled.div`
   width: 100%;
-  aspect-ratio: 1.91 / 1;
+  aspect-ratio: 352 / 184;
   position: relative;
-  border-radius: 6px;
-  overflow: hidden;
   flex-shrink: 0;
   z-index: 2;
 `;
@@ -17,41 +15,67 @@ const Card = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem;
-  margin: 1rem;
   width: min(22rem, 100%);
-  box-shadow: 0px 4px 4px 0px #00000021;
-  border: 1px solid #99999999;
+  margin: 1rem;
   border-radius: 10px;
+  box-shadow: 2px 2px 6px 0px #00000040;
   position: relative;
   overflow: hidden;
-  justify-content: space-between;
   z-index: 10;
-  background: linear-gradient(180deg, #fffde7 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #fff9c1 0%, #fafafa 100%);
+  transition: all 300ms ease-out;
 
   * {
     z-index: 2;
   }
 
-  .description {
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding: 0 1rem 1.25rem;
+  }
+
+  .top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.625rem;
   }
 
   .date {
-    font-weight: bold;
-    color: #666666;
-    font-size: 0.8rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 100%;
+    color: #00000099;
   }
 
   .amount {
-    color: #666666;
-    font-size: 0.8rem;
-    font-weight: bold;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-size: 0.875rem;
+    line-height: 100%;
+    text-align: right;
+    color: #6562fe;
+    white-space: nowrap;
+  }
+
+  .description {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 100%;
+    color: #000000b2;
   }
 
   h1 {
-    color: #1a1a1a;
-    font-size: 1.3rem;
-    transition: color 0.2s ease-in-out;
+    font-family: "Roboto", sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    line-height: 100%;
+    color: #2b2b2b;
+    transition: color 300ms ease-out;
   }
 
   &:hover h1 {
@@ -67,18 +91,12 @@ const LoadMoreCard = styled(Card)`
   color: white;
   font-weight: bold;
   letter-spacing: 1px;
-  transition: all 0.2s ease-in-out;
+  min-height: 12rem;
 
   &:hover {
     background: white;
     color: #6562fe;
   }
-`;
-
-const TopSpan = styled.span`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
 `;
 
 export default function NewsCard({
@@ -114,24 +132,26 @@ export default function NewsCard({
   return (
     <Link href={link || "#"} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block", width: "min(22rem, 100%)", margin: "1rem" }}>
       <Card style={{ margin: 0, width: "100%" }}>
-      {thumbnail && (
-        <ThumbnailWrapper>
-          <Image src={thumbnail} alt={title} fill unoptimized style={{ objectFit: "cover" }} />
-        </ThumbnailWrapper>
-      )}
-      <TopSpan>
-        <h1>{title}</h1>
-        {(amount || displayMonth) && (
-          <span>
-            <p className="amount">
-              {amount && (`${amount.slice(0, 2).toLowerCase() === "rs" ? " " : "₹"}` + amount + " | ")}
-              <span className="date">{displayMonth}</span>
-            </p>
-          </span>
+        {thumbnail && (
+          <ThumbnailWrapper>
+            <Image src={thumbnail} alt={title} fill unoptimized style={{ objectFit: "cover" }} />
+          </ThumbnailWrapper>
         )}
-
-        <p className="description">{displayDescription}</p>
-      </TopSpan>
+        <div className="content">
+          {(amount || displayMonth) && (
+            <div className="top-row">
+              {displayMonth && <span className="date">{displayMonth}</span>}
+              {amount && (
+                <span className="amount">
+                  {amount.slice(0, 2).toLowerCase() === "rs" ? " " : "₹"}
+                  {amount}
+                </span>
+              )}
+            </div>
+          )}
+          <h1>{title}</h1>
+          <p className="description">{displayDescription}</p>
+        </div>
       </Card>
     </Link>
   );

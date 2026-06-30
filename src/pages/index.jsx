@@ -323,10 +323,11 @@ const SectionWidgets = styled.section`
 export default function Home() {
   const [donors, setDonors] = useState([]);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [reports, setReports] = useState([]);
+  const [allReports, setAllReports] = useState([]);
   const [reportsPage, setReportsPage] = useState(1);
   const [reportsTotalPages, setReportsTotalPages] = useState(1);
   const [reportsLoading, setReportsLoading] = useState(true);
+  const REPORTS_PAGE_SIZE = 8;
 
   const donationsScrollRef = useRef(null);
   const testimonialsScrollRef = useRef(null);
@@ -363,19 +364,24 @@ export default function Home() {
     }
   };
 
+  // Reports come from the mongo-backed API (api-service -> reports.js model).
+  // Schema fields: title, subtitle, date, thumbnail, link (no `amount` field exists yet,
+  // so it's passed through optionally and NewsCard just won't render it until it's added).
   useEffect(() => {
     async function fetchReports() {
       setReportsLoading(true);
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/v1/hc/reports?page=${reportsPage}&pageSize=8`,
+          `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"}/v1/hc/reports?page=${reportsPage}&pageSize=${REPORTS_PAGE_SIZE}`,
         );
         const result = await response.json();
         if (result.ok) {
-          setReports((prev) => reportsPage === 1 ? result.data.reports : [...prev, ...result.data.reports]);
+          setAllReports((prev) =>
+            reportsPage === 1 ? result.data.reports : [...prev, ...result.data.reports],
+          );
           setReportsTotalPages(result.data.totalPages || 1);
         } else {
-          console.error("Error fetching reports:", result.err);
+          console.error("Error fetching reports:", result.msg);
         }
       } catch (error) {
         console.error("Error fetching reports:", error);
@@ -386,6 +392,8 @@ export default function Home() {
 
     fetchReports();
   }, [reportsPage]);
+
+  const reports = allReports;
 
   useEffect(() => {
     const fetchDonors = async () => {
