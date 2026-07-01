@@ -101,22 +101,11 @@ const Card = styled.div`
     text-overflow: ellipsis;
   }
 
-  &:hover h1 {
-    color: #6562fe;
-  }
-`;
-
-const LoadMoreCard = styled(Card)`
-  background: #6562fe;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-weight: bold;
-  letter-spacing: 1px;
-
   &:hover {
-    background: white;
+    box-shadow: 4px 4px 6px 0px #00000040;
+  }
+
+  &:hover h1 {
     color: #6562fe;
   }
 `;
@@ -130,22 +119,7 @@ export default function NewsCard({
   description,
   month,
   link,
-  loadMore,
-  onClick,
 }) {
-  const handleLoadMore = (e) => {
-    e.preventDefault();
-    if (onClick) onClick();
-    document.getElementById("stories")?.scrollIntoView({ behavior: "instant" });
-  };
-
-  if (loadMore) {
-    return (
-      <LoadMoreCard onClick={handleLoadMore}>
-        <p>Load all</p>
-      </LoadMoreCard>
-    );
-  }
   const displayDescription = subtitle || description;
   const displayMonth = date
     ? new Date(date).toLocaleDateString("en-IN", { month: "long", year: "numeric" })

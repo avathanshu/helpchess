@@ -169,6 +169,7 @@ const SectionNews = styled.section`
   align-items: center;
   gap: 2rem;
   margin-top: 2rem;
+  margin-bottom: 3rem;
   overflow-x: hidden;
   .articles {
     width: 100%;
@@ -178,6 +179,13 @@ const SectionNews = styled.section`
     flex-wrap: wrap;
     justify-content: center;
   }
+`;
+
+const LoadMoreWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
 `;
 
 const SectionDonate = styled.section`
@@ -327,7 +335,7 @@ export default function Home() {
   const [reportsPage, setReportsPage] = useState(1);
   const [reportsTotalPages, setReportsTotalPages] = useState(1);
   const [reportsLoading, setReportsLoading] = useState(true);
-  const REPORTS_PAGE_SIZE = 8;
+  const REPORTS_PAGE_SIZE = 9;
 
   const donationsScrollRef = useRef(null);
   const testimonialsScrollRef = useRef(null);
@@ -583,10 +591,19 @@ export default function Home() {
                   link={report.link}
                 />
               ))}
-              {reportsPage < reportsTotalPages && (
-                <NewsCard loadMore onClick={() => setReportsPage((p) => p + 1)} />
-              )}
             </span>
+          )}
+          {!reportsLoading && reportsPage < reportsTotalPages && (
+            <LoadMoreWrapper>
+              <Button
+                title="Load more"
+                secondary
+                onClick={() => {
+                  setReportsPage((p) => p + 1);
+                  document.getElementById("stories")?.scrollIntoView({ behavior: "instant" });
+                }}
+              ></Button>
+            </LoadMoreWrapper>
           )}
         </SectionNews>
         <ImageBannerContainer>
