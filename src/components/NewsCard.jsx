@@ -2,20 +2,20 @@ import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
 
+const THUMBNAIL_HEIGHT_RATIO = (184 / 385) * 100;
 
 const ThumbnailWrapper = styled.div`
   width: 100%;
-  aspect-ratio: 352 / 184;
+  flex: 0 0 ${THUMBNAIL_HEIGHT_RATIO}%;
   position: relative;
-  flex-shrink: 0;
   z-index: 2;
 `;
 
 const Card = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
   width: min(22rem, 100%);
+  aspect-ratio: 352 / 385;
   margin: 1rem;
   border-radius: 10px;
   box-shadow: 2px 2px 6px 0px #00000040;
@@ -30,10 +30,13 @@ const Card = styled.div`
   }
 
   .content {
+    flex: 1 1 auto;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
-    padding: 0 1rem 1.25rem;
+    padding: 1rem 1rem 1.5rem;
+    overflow: hidden;
   }
 
   .top-row {
@@ -41,6 +44,7 @@ const Card = styled.div`
     align-items: center;
     justify-content: space-between;
     gap: 0.625rem;
+    flex-shrink: 0;
   }
 
   .date {
@@ -49,6 +53,9 @@ const Card = styled.div`
     font-size: 0.875rem;
     line-height: 100%;
     color: #00000099;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .amount {
@@ -59,14 +66,26 @@ const Card = styled.div`
     text-align: right;
     color: #6562fe;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .description {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-size: 1rem;
-    line-height: 100%;
+    line-height: 1.4;
     color: #000000b2;
+    flex-shrink: 0;
+    /* fixed to exactly 3 lines so overflow: hidden always cuts right at the
+       line-clamp boundary instead of mid-line when flex gave it an
+       arbitrary leftover height that wasn't a multiple of line-height */
+    height: calc(1.4em * 3);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   h1 {
@@ -76,6 +95,10 @@ const Card = styled.div`
     line-height: 100%;
     color: #2b2b2b;
     transition: color 300ms ease-out;
+    flex-shrink: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &:hover h1 {
@@ -91,7 +114,6 @@ const LoadMoreCard = styled(Card)`
   color: white;
   font-weight: bold;
   letter-spacing: 1px;
-  min-height: 12rem;
 
   &:hover {
     background: white;
@@ -141,12 +163,7 @@ export default function NewsCard({
           {(amount || displayMonth) && (
             <div className="top-row">
               {displayMonth && <span className="date">{displayMonth}</span>}
-              {amount && (
-                <span className="amount">
-                  {amount.slice(0, 2).toLowerCase() === "rs" ? " " : "₹"}
-                  {amount}
-                </span>
-              )}
+              {amount && <span className="amount">{amount}</span>}
             </div>
           )}
           <h1>{title}</h1>

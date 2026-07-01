@@ -364,9 +364,7 @@ export default function Home() {
     }
   };
 
-  // Reports come from the mongo-backed API (api-service -> reports.js model).
-  // Schema fields: title, subtitle, date, thumbnail, link (no `amount` field exists yet,
-  // so it's passed through optionally and NewsCard just won't render it until it's added).
+
   useEffect(() => {
     async function fetchReports() {
       setReportsLoading(true);
